@@ -33,4 +33,4 @@ jobs:
         id: build
         uses: gradle/actions/setup-gradle@v3
         with:
-          arguments: build -x
+          arguments: build
