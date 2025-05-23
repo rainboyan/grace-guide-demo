@@ -1,11 +1,7 @@
-name: Grace Doc
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+How to deploy guide to GitHub Pages,
+
+[source,yml]
+----
 jobs:
   # Build job
   build:
@@ -27,15 +23,13 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
+      - name: Get the current version
+        id: current_version
+        run: |
+          echo "$(cat gradle.properties | grep 'projectVersion=' | awk '{print $1}')" >> "$GITHUB_OUTPUT"
       - name: Generate Docs
         id: build
         uses: gradle/actions/setup-gradle@v3
         with:
           arguments: docs
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: rainboyan/deploy-github-pages@main
-        env:
-          TOKEN: ${{ secrets.GH_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: build/docs
+----
